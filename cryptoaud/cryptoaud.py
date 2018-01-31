@@ -26,7 +26,7 @@ class CryptoAUD:
         text = ""
         
         if len(currencies) == 0:
-            currencies = [None, None, None, None, None]
+            currencies = [None]
         print(currencies)
         for i in currencies:
             async with aiohttp.get("https://coinmarketcap.com/all/views/all/") as response:
@@ -35,13 +35,13 @@ class CryptoAUD:
             for result in tds:
                 if i is None:
                     results.append(result)
-                    break
+                    if numCurrencies = 5:
+                        break
+                    numCurrencies += 1
                 else:
                     colSymbol = result.find("td", class_="col-symbol").get_text().strip()
                     currencyName = result.find("a", class_="currency-name-container").get_text().strip().lower()
                     if (colSymbol == i.upper()) or (currencyName == i.lower()):
-                        await self.bot.say("colSymbol: " + colSymbol)
-                        await self.bot.say("currencyName: " + currencyName)
                         results.append(result)
                         break
                 
@@ -57,6 +57,12 @@ class CryptoAUD:
         headers = ['Name', 'Symbol', 'Price (USD)', 'Price (AUD)', 'Change']    
         x = PrettyTable(headers)
         
+        rate = 0
+        url = 'http://api.fixer.io/latest?base=USD&symbols=AUD'
+        async with aiohttp.request("GET", url) as r:
+            exch = await r.json()
+            rate = float(exch['rates']['AUD'])
+    
         for row in results:
             column = []
             column.append(row.find("a", class_="currency-name-container").get_text().strip())
@@ -64,11 +70,6 @@ class CryptoAUD:
             
             priceUSD = row.find("a", class_="price").get_text().strip().strip("$")
             flPriceUSD = float(priceUSD)
-            rate = 0
-            url = 'http://api.fixer.io/latest?base=USD&symbols=AUD'
-            async with aiohttp.request("GET", url) as r:
-                exch = await r.json()
-                rate = float(exch['rates']['AUD'])
             flPriceAUD = float(rate * flPriceUSD)
             
             column.append('${0:.2f}'.format(flPriceUSD))
