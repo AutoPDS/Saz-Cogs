@@ -76,7 +76,7 @@ class CryptoAUD:
             column.append(row.find("td", class_="percent-24h").get_text().strip())
             x.add_row(column)
             
-        return x
+        return x.get_string()
 
 
 def setup(bot):
