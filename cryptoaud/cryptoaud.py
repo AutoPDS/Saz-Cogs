@@ -17,13 +17,15 @@ class CryptoAUD:
         self.url = "https://coinmarketcap.com/"
 
     @commands.command()
-    async def cryptoaud(self, *currencies: str=None):
+    async def cryptoaud(self, *currencies):
         """Fetch price data for cryptocurrencies matching your query.
         If currency is omitted, will display top 5 by market cap."""
         
         numColumns = 4
         results = []
         numCurrencies = 0
+        if len(currencies) == 0:
+            currencies = None
         
         for i in currencies
             async with aiohttp.get("https://coinmarketcap.com/all/views/all/") as response:
