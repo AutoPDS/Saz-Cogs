@@ -30,10 +30,11 @@ class CryptoAUD:
         for i in currencies:
             async with aiohttp.get("https://coinmarketcap.com/all/views/all/") as response:
                 marketsoup = BeautifulSoup(await response.text(), "html.parser")
-
-            for result in cryptosoup.find_all("tr", id=re.compile("id-")):
-                
-                if (result.find("td", class_="col-symbol").get_text().strip() == i.upper()) or (result.find("td", class_="currency-name").a.get_text().strip() == i.lower()):
+            tds = cryptosoup.find_all("tr", id=re.compile("id-"))
+            for result in tds:
+                colSymbol = result.find("td", class_="col-symbol").get_text().strip()
+                currencyName = result.find("td", class_="currency-name").a.get_text().strip()
+                if (colSymbol == i.upper()) or (currencyName == i.lower()):
                     results.append(result)
                 else:
                     if currencies is None:
