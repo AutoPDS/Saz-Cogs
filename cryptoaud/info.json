@@ -1,0 +1,10 @@
+{
+    "NAME" : "CryptoAUD",
+    "AUTHOR" : "Spazman0",
+    "SHORT" : "Fetches cryptocurrency price data in USD and AUD",
+    "DESCRIPTION" : "Fetches cryptocurrency price data and converts to AUD.\n\nDependencies:\nBeautifulSoup4 :: https://www.crummy.com/software/BeautifulSoup/bs4/doc/\nPrettyTable :: https://pypi.python.org/pypi/PrettyTable",
+    "INSTALL_MSG" : "Thanks for installing CryptoAUD.",
+    "REQUIREMENTS" : ["beautifulsoup4", "prettytable"],
+    "TAGS" : ["crypto", "currency", "price", "bitcoin", "AUD"],
+    "DISABLED" : false
+}
