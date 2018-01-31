@@ -14,7 +14,6 @@ class CryptoAUD:
 
     def __init__(self, bot):
         self.bot = bot
-        self.url = "https://coinmarketcap.com/"
 
     @commands.command()
     async def cryptoaud(self, *currencies):
@@ -30,7 +29,7 @@ class CryptoAUD:
         for i in currencies:
             async with aiohttp.get("https://coinmarketcap.com/all/views/all/") as response:
                 marketsoup = BeautifulSoup(await response.text(), "html.parser")
-            tds = cryptosoup.find_all("tr", id=re.compile("id-"))
+            tds = marketsoup.find_all("tr", id=re.compile("id-"))
             for result in tds:
                 colSymbol = result.find("td", class_="col-symbol").get_text().strip()
                 currencyName = result.find("td", class_="currency-name").a.get_text().strip()
@@ -48,7 +47,7 @@ class CryptoAUD:
             text = self.tableize(results)
         await self.bot.say("```" + text + "```")
         
-    def tableize(self, results):
+    async def tableize(self, results):
         
         headers = ['Name', 'Symbol', 'Price (USD)', 'Price (AUD)', 'Change']    
         x = PrettyTable(headers)
