@@ -35,7 +35,7 @@ class CryptoAUD:
             for result in tds:
                 if i is None:
                     results.append(result)
-                    if numCurrencies = 5:
+                    if numCurrencies == 5:
                         break
                     numCurrencies += 1
                 else:
