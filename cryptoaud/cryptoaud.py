@@ -59,8 +59,8 @@ class CryptoAUD:
         
         for row in results:
             column = []
-            column.append(row.find("td", class_="currency-name").a.get_text().strip())
-            column.append(row.find("td", class_="col-symbol").get_text().strip)
+            column.append(row.find("a", class_="currency-name-container").get_text().strip())
+            column.append(row.find("td", class_="col-symbol").get_text().strip())
             
             priceUSD = row.find("a", class_="price").get_text().strip().strip("$")
             flPriceUSD = float(priceUSD)
