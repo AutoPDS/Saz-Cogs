@@ -48,7 +48,7 @@ class CryptoAUD:
             text = self.tableize(results)
         await self.bot.say("```" + text + "```")
         
-    def tableizeq(self, results):
+    def tableize(self, results):
         
         headers = ['Name', 'Symbol', 'Price (USD)', 'Price (AUD)', 'Change']    
         x = PrettyTable(headers)
@@ -61,7 +61,8 @@ class CryptoAUD:
             priceUSD = row.find("a", class_="price").get_text().strip()
             flPriceUSD = float(priceUSD)
             rate = 0
-            async with aiohttp.request("GET", "http://api.fixer.io/latest?base=USD&symbols=AUD") as r:
+            url = 'http://api.fixer.io/latest?base=USD&symbols=AUD'
+            async with aiohttp.request("GET", url) as r:
                 exch = await r.json()
                 rate = float(exch['rates']['AUD'])
             flPriceAUD = float(rate * flPriceUSD)
