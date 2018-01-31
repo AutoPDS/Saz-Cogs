@@ -38,10 +38,10 @@ class CryptoAUD:
                     break
                 else:
                     colSymbol = result.find("td", class_="col-symbol").get_text().strip()
-                    currencyName = result.find("td", class_="currency-name").a.get_text().strip()
-                    await self.bot.say("colSymbol: " + colSymbol)
-                    await self.bot.say("currencyName: " + currencyName)
+                    currencyName = result.find("a", class_="currency-name-container").get_text().strip().lower()
                     if (colSymbol == i.upper()) or (currencyName == i.lower()):
+                        await self.bot.say("colSymbol: " + colSymbol)
+                        await self.bot.say("currencyName: " + currencyName)
                         results.append(result)
                         break
                 
