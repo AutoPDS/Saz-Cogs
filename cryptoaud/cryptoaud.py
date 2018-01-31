@@ -17,7 +17,7 @@ class CryptoAUD:
 
     @commands.command()
     async def cryptoaud(self, *currencies):
-        """Fetch price data for cryptocurrencies matching your query.
+        """Fetch price data for cryptocurrencies provided to the command.
         If currency is omitted, will display top 5 by market cap."""
         
         numColumns = 4
@@ -27,7 +27,6 @@ class CryptoAUD:
         
         if len(currencies) == 0:
             currencies = [None]
-        print(currencies)
         for i in currencies:
             async with aiohttp.get("https://coinmarketcap.com/all/views/all/") as response:
                 marketsoup = BeautifulSoup(await response.text(), "html.parser")
@@ -35,7 +34,7 @@ class CryptoAUD:
             for result in tds:
                 if i is None:
                     results.append(result)
-                    if numCurrencies == 5:
+                    if numCurrencies == 4:
                         break
                     numCurrencies += 1
                 else:
