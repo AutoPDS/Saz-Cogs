@@ -48,7 +48,7 @@ class CryptoAUD:
         text = self.tableize(results)
         await self.bot.say("```" + text + "```")
         
-    def tableize(self, results, limit: int=None):
+    def tableizeq(self, results):
         
         headers = ['Name', 'Symbol', 'Price (USD)', 'Price (AUD)', 'Change']    
         x = PrettyTable(headers)
