@@ -35,13 +35,15 @@ class CryptoAUD:
             for result in tds:
                 if i is None:
                     results.append(result)
+                    break
                 else:
                     colSymbol = result.find("td", class_="col-symbol").get_text().strip()
                     currencyName = result.find("td", class_="currency-name").a.get_text().strip()
-                    await self.bot.say("colSymbol")
-                    await self.bot.say("currencyName")
+                    await self.bot.say("{}".format(colSymbol))
+                    await self.bot.say("{}".format(colSymbol))
                     if (colSymbol == i.upper()) or (currencyName == i.lower()):
                         results.append(result)
+                        break
                 
         if len(results) == 0:
             await self.bot.say("No currencies matched your query!")
