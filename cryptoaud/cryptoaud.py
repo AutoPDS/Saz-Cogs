@@ -27,7 +27,7 @@ class CryptoAUD:
         
         if len(currencies) == 0:
             currencies = [None, None, None, None, None]
-        
+        print(currencies)
         for i in currencies:
             async with aiohttp.get("https://coinmarketcap.com/all/views/all/") as response:
                 marketsoup = BeautifulSoup(await response.text(), "html.parser")
