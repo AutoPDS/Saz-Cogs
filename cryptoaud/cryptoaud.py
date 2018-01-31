@@ -33,13 +33,13 @@ class CryptoAUD:
 
             for result in cryptosoup.find_all("tr", id=re.compile("id-")):
                 
-                if (result.find("td", class_="col-symbol").get_text().strip() == i.upper()) || (result.find("td", class_="currency-name").a.get_text().strip() == i.lower()):
+                if (result.find("td", class_="col-symbol").get_text().strip() == i.upper()) or (result.find("td", class_="currency-name").a.get_text().strip() == i.lower()):
                     results.append(result)
                 else:
                     if currencies is None:
                         if numCurrencies < 5:
                             results.append(result)
-                numCurrencies ++
+                numCurrencies += 1
                 
         if len(results) == 0:
             await self.bot.say("No currencies matched your query!")
