@@ -45,7 +45,7 @@ class CryptoAUD:
         if len(results) == 0:
             await self.bot.say("No currencies matched your query!")
         else:
-        text = self.tableize(results)
+            text = self.tableize(results)
         await self.bot.say("```" + text + "```")
         
     def tableizeq(self, results):
