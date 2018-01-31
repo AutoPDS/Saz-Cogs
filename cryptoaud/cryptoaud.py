@@ -23,23 +23,25 @@ class CryptoAUD:
         numColumns = 4
         results = []
         numCurrencies = 0
+        text = ""
+        
         if len(currencies) == 0:
-            currencies = None
+            currencies = [None, None, None, None, None]
         
         for i in currencies:
             async with aiohttp.get("https://coinmarketcap.com/all/views/all/") as response:
                 marketsoup = BeautifulSoup(await response.text(), "html.parser")
             tds = marketsoup.find_all("tr", id=re.compile("id-"))
             for result in tds:
-                colSymbol = result.find("td", class_="col-symbol").get_text().strip()
-                currencyName = result.find("td", class_="currency-name").a.get_text().strip()
-                if (colSymbol == i.upper()) or (currencyName == i.lower()):
+                if i is None:
                     results.append(result)
                 else:
-                    if currencies is None:
-                        if numCurrencies < 5:
-                            results.append(result)
-                numCurrencies += 1
+                    colSymbol = result.find("td", class_="col-symbol").get_text().strip()
+                    currencyName = result.find("td", class_="currency-name").a.get_text().strip()
+                    await self.bot.say("colSymbol")
+                    await self.bot.say("currencyName")
+                    if (colSymbol == i.upper()) or (currencyName == i.lower()):
+                        results.append(result)
                 
         if len(results) == 0:
             await self.bot.say("No currencies matched your query!")
