@@ -31,7 +31,7 @@ class CryptoAUD:
             async with aiohttp.get("https://coinmarketcap.com/all/views/all/") as response:
                 marketsoup = BeautifulSoup(await response.text(), "html.parser")
 
-            for result in cryptosoup.find_all("tr", id=re.compile("id-"))
+            for result in cryptosoup.find_all("tr", id=re.compile("id-")):
                 
                 if (result.find("td", class_="col-symbol").get_text().strip() == i.upper()) || (result.find("td", class_="currency-name").a.get_text().strip() == i.lower()):
                     results.append(result)
