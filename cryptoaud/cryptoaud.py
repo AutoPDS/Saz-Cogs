@@ -38,7 +38,7 @@ class CryptoAUD:
                         break
                     numCurrencies += 1
                 else:
-                    colSymbol = result.find("td", class_="col-symbol").get_text().strip()
+                    colSymbol = result.find("td", class_="circulating-supply").find("span", class_="hidden-xs").get_text().strip()
                     currencyName = result.find("a", class_="currency-name-container").get_text().strip().lower()
                     if (colSymbol == i.upper()) or (currencyName == i.lower()):
                         results.append(result)
