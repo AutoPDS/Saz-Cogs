@@ -1,11 +1,11 @@
 import re
+
 import aiohttp
 from discord.ext import commands
 
 try:
     from bs4 import BeautifulSoup
     from prettytable import PrettyTable
-    import json
     requirementsSuccess = True
 except:
     requirementsSuccess = False
@@ -28,12 +28,9 @@ class CryptoAUD:
         if len(currencies) == 0:
             currencies = [None]
         for i in currencies:
-            async with aiohttp.get("https://api.coinmarketcap.com/v1/ticker/?convert=AUD") as response:
-                """marketsoup = BeautifulSoup(await response.text(), "html.parser")"""
-            """tds = marketsoup.find_all("tr", id=re.compile("id-"))"""
-            responseText = await response.text()
-            await self.bot.say("response: " + responseText)
-            tds = json.loads(responseText)
+            async with aiohttp.get("https://coinmarketcap.com") as response:
+                marketsoup = BeautifulSoup(await response.text(), "html.parser")
+            tds = marketsoup.find_all("tr", id=re.compile("id-"))
             for result in tds:
                 if i is None:
                     results.append(result)
@@ -41,11 +38,8 @@ class CryptoAUD:
                         break
                     numCurrencies += 1
                 else:
-                    colSymbol = result["symbol"]
-                    currencyName = result["name"]
-                    await self.bot.say("colSymbol: " + colSymbol + " currencyName: " + currencyName)
-                    """colSymbol = result.find("td", class_="circulating-supply").find("span", class_="hidden-xs").get_text().strip()
-                    currencyName = result.find("a", class_="currency-name-container").get_text().strip().lower()"""
+                    colSymbol = result.find("td", class_="circulating-supply").find("span", class_="hidden-xs").get_text().strip()
+                    currencyName = result.find("a", class_="currency-name-container").get_text().strip().lower()
                     if (colSymbol == i.upper()) or (currencyName == i.lower()):
                         results.append(result)
                         break
