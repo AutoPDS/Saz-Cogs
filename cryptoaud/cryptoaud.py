@@ -31,7 +31,7 @@ class CryptoAUD:
             async with aiohttp.get("https://api.coinmarketcap.com/v1/ticker/?convert=AUD") as response:
                 """marketsoup = BeautifulSoup(await response.text(), "html.parser")"""
             """tds = marketsoup.find_all("tr", id=re.compile("id-"))"""
-            tds = json.loads(response)
+            tds = json.loads(await response.text())
             for result in tds:
                 if i is None:
                     results.append(result)
