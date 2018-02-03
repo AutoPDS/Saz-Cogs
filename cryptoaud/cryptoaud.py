@@ -28,7 +28,7 @@ class CryptoAUD:
             
         async with aiohttp.ClientSession() as session:
             async with session.get("https://api.coinmarketcap.com/v1/ticker/?convert=AUD") as response:
-                jsonData = await resp.json()
+                jsonData = await response.json()
         for result in jsonData:
             if currencies[0] is None:
                 results.append(result)
