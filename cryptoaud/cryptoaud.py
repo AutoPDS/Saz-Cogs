@@ -4,7 +4,6 @@ import aiohttp
 from discord.ext import commands
 
 try:
-    from bs4 import BeautifulSoup
     from prettytable import PrettyTable
     requirementsSuccess = True
 except:
@@ -18,30 +17,31 @@ class CryptoAUD:
     @commands.command()
     async def cryptoaud(self, *currencies):
         """Fetch price data for cryptocurrencies provided to the command.
-        If currency is omitted, will display top 5 by market cap."""
+        If currency is omitted, will display top 5 by market cap."""    
         
-        numColumns = 4
-        results = []
-        numCurrencies = 0
-        text = ""
-        
+        #set currencies to empty if none provided, and get 5 currencies.
         if len(currencies) == 0:
             currencies = [None]
-        for i in currencies:
-            async with aiohttp.get("https://coinmarketcap.com") as response:
-                marketsoup = BeautifulSoup(await response.text(), "html.parser")
-            tds = marketsoup.find_all("tr", id=re.compile("id-"))
-            for result in tds:
-                if i is None:
+            numCurrenciesLeft = 5
+        else:
+            numCurrenciesLeft = len(currencies)
+            
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://api.coinmarketcap.com/v1/ticker/?convert=AUD") as response:
+                jsonData = await resp.json()
+        for result in jsonData:
+            if currencies[0] is None:
+                results.append(result)
+                numCurrenciesLeft -= 1
+                if numCurrencies == 0:
+                    break
+            else:
+                colSymbol = result['symbol']
+                currencyName = result['name']
+                if (colSymbol in [x.upper() for x in currencies]) or (currencyName.lower() in [x.lower() for x in currencies])::
                     results.append(result)
-                    if numCurrencies == 4:
-                        break
-                    numCurrencies += 1
-                else:
-                    colSymbol = result.find("td", class_="circulating-supply").find("span", class_="hidden-xs").get_text().strip()
-                    currencyName = result.find("a", class_="currency-name-container").get_text().strip().lower()
-                    if (colSymbol == i.upper()) or (currencyName == i.lower()):
-                        results.append(result)
+                    numCurrenciesLeft -=1
+                    if numCurrenciesLeft == 0:
                         break
                 
         if len(results) == 0:
@@ -54,29 +54,38 @@ class CryptoAUD:
         
     async def tableize(self, results):
         
-        headers = ['Name', 'Symbol', 'Price (USD)', 'Price (AUD)', 'Change']    
+        headers = ['Name', 'Symbol', 'Price (USD)', 'Price (AUD)', 'Change (24hr)']    
         x = PrettyTable(headers)
         
-        rate = 0
-        url = 'http://api.fixer.io/latest?base=USD&symbols=AUD'
-        async with aiohttp.request("GET", url) as r:
-            exch = await r.json()
-            rate = float(exch['rates']['AUD'])
-    
+        ####
+        #Old exchange rate code
+        ####
+        #rate = 0
+        #url = 'http://api.fixer.io/latest?base=USD&symbols=AUD'
+        #async with aiohttp.ClientSession() as session:
+        #    async with session.get(url) as r:
+        #        exch = await r.json()
+        #rate = float(exch['rates']['AUD'])
+
         for row in results:
             column = []
-            column.append(row.find("a", class_="currency-name-container").get_text().strip())
-            column.append(row.find("td", class_="circulating-supply").find("span", class_="hidden-xs").get_text().strip())
+            column.append(row['name'])
+            column.append(row['symbol'])
             
-            priceUSD = row.find("a", class_="price").get_text().strip().strip("$")
+            priceUSD = row['price_usd']
             flPriceUSD = float(priceUSD)
-            flPriceAUD = float(rate * flPriceUSD)
+            priceAUD = row['price_aud']
+            flPriceAUD = float(priceAUD)
             
             column.append('${0:.2f}'.format(flPriceUSD))
             column.append('${0:.2f}'.format(flPriceAUD))
-            column.append(row.find("td", class_="percent-24h").get_text().strip())
+            column.append('{}%'.format(row['percent_change_24h']))
             x.add_row(column)
-            
+        x.align["Change (24hr)"] = "r"
+        x.align["Price (USD)"] = "r"
+        x.align["Price (AUD)"] = "r"
+        x.align["Name"] = "l"
+        x.align["Symbol"] = "c"
         return x.get_string()
 
 
@@ -85,5 +94,4 @@ def setup(bot):
         bot.add_cog(CryptoAUD(bot))
     else:
         raise RuntimeError("You are missing requirements. Please run:\n"
-                           "`pip3 install beautifulsoup4`\n"
-"`pip3 install tabulate`")
+                           "`pip3 install prettytable`")
