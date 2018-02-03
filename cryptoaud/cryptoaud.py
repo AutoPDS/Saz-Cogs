@@ -38,7 +38,7 @@ class CryptoAUD:
             else:
                 colSymbol = result['symbol']
                 currencyName = result['name']
-                if (colSymbol in [x.upper() for x in currencies]) or (currencyName.lower() in [x.lower() for x in currencies])::
+                if (colSymbol in [x.upper() for x in currencies]) or (currencyName.lower() in [x.lower() for x in currencies]):
                     results.append(result)
                     numCurrenciesLeft -=1
                     if numCurrenciesLeft == 0:
