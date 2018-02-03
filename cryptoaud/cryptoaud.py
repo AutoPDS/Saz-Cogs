@@ -19,6 +19,8 @@ class CryptoAUD:
         """Fetch price data for cryptocurrencies provided to the command.
         If currency is omitted, will display top 5 by market cap."""    
         
+        results=[]
+        
         #set currencies to empty if none provided, and get 5 currencies.
         if len(currencies) == 0:
             currencies = [None]
@@ -49,8 +51,7 @@ class CryptoAUD:
             return
         else:
             text = await self.tableize(results)
-        
-        await self.bot.say("```" + text + "```")
+            await self.bot.say("```" + text + "```")
         
     async def tableize(self, results):
         
