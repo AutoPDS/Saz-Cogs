@@ -32,15 +32,18 @@ class CryptoAUD:
         if len(currencies) == 0:
             currencies = [None]
             numCurrenciesLeft = 5
+            limit = 5
         else:
             if is_number(currencies[0]):
                 numCurrenciesLeft = int(currencies[0])
+                limit = numCurrenciesLeft
                 currencies = [None]
             else:
+                limit = 0
                 numCurrenciesLeft = len(currencies)
             
         async with aiohttp.ClientSession() as session:
-            async with session.get("https://api.coinmarketcap.com/v1/ticker/?convert=AUD") as response:
+            async with session.get("https://api.coinmarketcap.com/v1/ticker/?convert=AUD&limit={}".format(limit)) as response:
                 jsonData = await response.json()
         for result in jsonData:
             if currencies[0] is None:
