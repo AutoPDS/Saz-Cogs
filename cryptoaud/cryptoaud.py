@@ -1,6 +1,7 @@
 import re
 
 import aiohttp
+import math
 from discord.ext import commands
 
 try:
