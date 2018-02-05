@@ -9,6 +9,13 @@ try:
 except:
     requirementsSuccess = False
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+    
 class CryptoAUD:
 
     def __init__(self, bot):
@@ -26,7 +33,11 @@ class CryptoAUD:
             currencies = [None]
             numCurrenciesLeft = 5
         else:
-            numCurrenciesLeft = len(currencies)
+            if is_number(currencies[0]):
+                currencies = [None]
+                numCurrenciesLeft = currencies[0]
+            else:
+                numCurrenciesLeft = len(currencies)
             
         async with aiohttp.ClientSession() as session:
             async with session.get("https://api.coinmarketcap.com/v1/ticker/?convert=AUD") as response:
@@ -35,7 +46,7 @@ class CryptoAUD:
             if currencies[0] is None:
                 results.append(result)
                 numCurrenciesLeft -= 1
-                if numCurrenciesLeft == 0:
+                if numCurrenciesLeft <= 0:
                     break
             else:
                 colSymbol = result['symbol']
