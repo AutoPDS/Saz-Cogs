@@ -61,8 +61,9 @@ class CryptoAUD:
             await self.bot.say("No currencies matched your query!")
             return
         else:
-            text = await self.tableize(results)
-            await self.bot.say("```" + text + "```")
+            tables = await self.tableize(results)
+            for table in tables:
+                await self.bot.say("```" + table + "```")
         
     async def tableize(self, results):
         
@@ -98,7 +99,13 @@ class CryptoAUD:
         x.align["Price (AUD)"] = "r"
         x.align["Name"] = "l"
         x.align["Symbol"] = "c"
-        return x.get_string()
+        
+        numRows = len(results)
+        strings = []
+        numTables = math.ceil(numRows / 20)
+        for table in range(numTables):
+            strings.append(x[table*20:(table + 1)*20].get_string())
+        return strings
 
 
 def setup(bot):
