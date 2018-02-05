@@ -34,8 +34,8 @@ class CryptoAUD:
             numCurrenciesLeft = 5
         else:
             if is_number(currencies[0]):
-                currencies = [None]
                 numCurrenciesLeft = int(currencies[0])
+                currencies = [None]
             else:
                 numCurrenciesLeft = len(currencies)
             
