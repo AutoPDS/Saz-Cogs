@@ -35,7 +35,7 @@ class CryptoAUD:
             if currencies[0] is None:
                 results.append(result)
                 numCurrenciesLeft -= 1
-                if numCurrencies == 0:
+                if numCurrenciesLeft == 0:
                     break
             else:
                 colSymbol = result['symbol']
