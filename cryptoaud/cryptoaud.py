@@ -106,9 +106,9 @@ class CryptoAUD:
         
         numRows = len(results)
         strings = []
-        numTables = math.ceil(numRows / 20)
+        numTables = math.ceil(numRows / 15)
         for table in range(numTables):
-            strings.append(x[table*20:(table + 1)*20].get_string())
+            strings.append(x[table*15:(table + 1)*15].get_string())
         return strings
 
 
